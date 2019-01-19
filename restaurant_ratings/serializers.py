@@ -1,12 +1,11 @@
 from rest_framework import serializers
-from django.contrib.auth.models import User
-from ratings.models import Restaurant, Review, Review_Dish, Saved_Dish, Allergy
+from ratings.models import Restaurant, Review, Review_Dish, Saved_Dish, Allergy, User
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
-        fields = ("username", "email", "is_staff")
+        fields = ("username", "first_name", "last_name", "email", "is_staff")
 
 
 class RestaurantSerializer(serializers.HyperlinkedModelSerializer):
