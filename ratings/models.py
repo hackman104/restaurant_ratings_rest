@@ -4,6 +4,8 @@ from django.conf import settings
 from django.utils import timezone
 
 # Create your models here.
+
+
 class User(AbstractUser):
     """An enhanced user model"""
     @property
@@ -12,7 +14,7 @@ class User(AbstractUser):
 
 
 class Restaurant(models.Model):
-    """A model to track restaurant info"""    
+    """A model to track restaurant info"""
     USA = 'USA'
     CANADA = 'CA'
     MEXICO = 'MEX'
@@ -24,14 +26,20 @@ class Restaurant(models.Model):
     name = models.CharField(max_length=200)
     date_added = models.DateTimeField("date added", default=timezone.now)
     # last_review = models.DateTimeField("last review")
-    street_address = models.CharField(max_length=100, default=None, blank=True, null=True)
-    street_address_2 = models.CharField(max_length=30, default=None, blank=True, null=True)
+    street_address = models.CharField(
+        max_length=100, default=None, blank=True, null=True)
+    street_address_2 = models.CharField(
+        max_length=30, default=None, blank=True, null=True)
     city = models.CharField(max_length=50, default=None, blank=True, null=True)
     state = models.CharField(max_length=2, default=None, blank=True, null=True)
-    country = models.CharField(max_length=50, choices=COUNTRY_CHOICES, default=USA)
-    phone_number = models.CharField(max_length=15, default=None, blank=True, null=True)
-    website = models.CharField(max_length=100, default=None, blank=True, null=True)
-    google_maps_link = models.CharField(max_length=300, default=None, blank=True, null=True)
+    country = models.CharField(
+        max_length=50, choices=COUNTRY_CHOICES, default=USA)
+    phone_number = models.CharField(
+        max_length=15, default=None, blank=True, null=True)
+    website = models.CharField(
+        max_length=100, default=None, blank=True, null=True)
+    google_maps_link = models.CharField(
+        max_length=300, default=None, blank=True, null=True)
 
     @property
     def latest_review(self):
@@ -43,24 +51,12 @@ class Restaurant(models.Model):
 
 class Review(models.Model):
     """A model that tracks restaurant reviews"""
-    ZERO_STAR = 0
-    ONE_STAR = 1
-    TWO_STAR = 2
-    THREE_STAR = 3
-    FOUR_STAR = 4
-    FIVE_STAR = 5
-    STAR_CHOICES = (
-        (ZERO_STAR, '0'),
-        (ONE_STAR, '1'),
-        (TWO_STAR, '2'),
-        (THREE_STAR, '3'),
-        (FOUR_STAR, '4'),
-        (FIVE_STAR, '5'),
-    )
-    reviewer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    reviewer = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
-    score = models.IntegerField(default=0) # overall ease of eating there with given allergy
-    food_rating = models.IntegerField(default=0) # overall food rating
+    # overall ease of eating there with given allergy
+    score = models.IntegerField(default=0)
+    food_rating = models.IntegerField(default=0)  # overall food rating
     description = models.TextField(default=None, blank=True, null=True)
     review_date = models.DateTimeField("review date", default=timezone.now)
     up_vote = models.IntegerField(default=0)
@@ -76,25 +72,44 @@ class ReviewAllergy(models.Model):
     allergy = models.ForeignKey(Allergy, on_delete=models.CASCADE)
 
 
-class Review_Dish(models.Model):
-    """A dish linked to a review"""    
-    review = models.ForeignKey(Review, on_delete=models.CASCADE)
-    dish_name = models.CharField(max_length=50)
-    modifications = models.CharField(max_length=300, default=None, blank=True, null=True)
-    description = models.CharField(max_length=300, default=None, blank=True, null=True)
-    item_rating = models.IntegerField(default=0)
+class Dish(models.Model):
+    name = models.CharField(max_length=50)
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
+    description = models.CharField(
+        max_length=300, default=None, blank=True, null=True)
+    created_on = models.DateField(`auto_now`_add=True)
 
     class Meta:
-        ordering = ('dish_name',)
+        ordering = ("name",)
+
+
+class UserDish(models.Model):
+    """A dish/user junction"""
+    dish = models.ForeignKey(Dish, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    notes = models.CharField(max_length=200)
+    modifications = models.CharField(
+        max_length=300, default=None, blank=True, null=True)
+    score = models.IntegerField(default=None, blank=True, null=True)
+    created_on = models.DateField(auto_now_add=True)
+
+
+class ReviewDish(models.Model):
+    """A dish linked to a review"""
+    review = models.ForeignKey(Review, on_delete=models.CASCADE)
+    dish = models.ForeignKey(Dish, on_delete=models.CASCADE)
 
 
 class Saved_Dish(models.Model):
     """A model to track users' saved dishes"""
     user = models.ForeignKey(settings.AUTH_USER_MODEL, models.CASCADE)
-    restaurant = models.ForeignKey(Restaurant, null=True, blank=True, on_delete=models.SET_NULL)
+    restaurant = models.ForeignKey(
+        Restaurant, null=True, blank=True, on_delete=models.SET_NULL)
     dish_name = models.CharField(max_length=50)
-    modifications = models.CharField(max_length=300, default=None, blank=True, null=True)
-    notes = models.CharField(max_length=300, default=None, blank=True, null=True)
+    modifications = models.CharField(
+        max_length=300, default=None, blank=True, null=True)
+    notes = models.CharField(
+        max_length=300, default=None, blank=True, null=True)
     date_added = models.DateTimeField('date added', default=timezone.now)
 
     class Meta:
@@ -104,18 +119,21 @@ class Saved_Dish(models.Model):
 class Allergy(models.Model):
     """A base list of allergens"""
     name = models.CharField(max_length=50)
-    description = models.CharField(max_length=100, default=None, blank=True, null=True)
+    description = models.CharField(
+        max_length=100, default=None, blank=True, null=True)
 
     class Meta:
         ordering = ('name')
 
 
 class UserAllergy(models.Model):
-    """A model to track users' individual allergies"""    
+    """A model to track users' individual allergies"""
     allergy = models.ForeignKey(Allergy, on_delete=models.CASCADE)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE)
     severity = models.IntegerField(default=0)
-    notes = models.CharField(max_length=300, default=None, blank=True, null=True)
+    notes = models.CharField(
+        max_length=300, default=None, blank=True, null=True)
 
     class Meta:
         ordering = ('-severity', 'allergy')
