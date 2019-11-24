@@ -102,7 +102,7 @@ class Allergy(models.Model):
         max_length=100, default=None, blank=True, null=True)
 
     class Meta:
-        ordering = ('name')
+        ordering = ('name',)
 
 
 class UserAllergy(models.Model):
