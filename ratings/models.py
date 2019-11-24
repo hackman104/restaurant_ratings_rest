@@ -28,6 +28,8 @@ class Restaurant(models.Model):
     city = models.CharField(max_length=50, default=None, blank=True, null=True)
     state = models.CharField(max_length=2, default=None, blank=True, null=True)
     country = models.ForeignKey('Country', on_delete=models.CASCADE)
+    postal_code = models.CharField(
+        max_length=9, default=None, blank=True, null=True)
     phone_number = models.CharField(
         max_length=15, default=None, blank=True, null=True)
     website = models.CharField(
