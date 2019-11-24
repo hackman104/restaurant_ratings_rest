@@ -13,6 +13,11 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
 
 
+class CountryViewSet(viewsets.ModelViewSet):
+    queryset = Country.objects.all()
+    serializer_class = CountrySerializer
+
+
 class RestaurantViewSet(viewsets.ModelViewSet):
     queryset = Restaurant.objects.all()
     serializer_class = RestaurantSerializer
@@ -23,16 +28,31 @@ class ReviewViewSet(viewsets.ModelViewSet):
     serializer_class = ReviewSerializer
 
 
-class Review_DishViewSet(viewsets.ModelViewSet):
-    queryset = Review_Dish.objects.all()
-    serializer_class = Review_DishSerializer
+class ReviewAllergyViewSet(viewsets.ModelViewSet):
+    queryset = ReviewAllergy.objects.all()
+    serializer_class = ReviewAllergySerializer
 
 
-class Saved_DishViewSet(viewsets.ModelViewSet):
-    queryset = Saved_Dish.objects.all()
-    serializer_class = Saved_DishSerializer
+class DishViewSet(viewsets.ModelViewSet):
+    queryset = Dish.objects.all()
+    serializer_class = DishSerializer
+
+
+class ReviewDishViewSet(viewsets.ModelViewSet):
+    queryset = ReviewDish.objects.all()
+    serializer_class = ReviewDishSerializer
+
+
+class UserDishViewSet(viewsets.ModelViewSet):
+    queryset = UserDish.objects.all()
+    serializer_class = UserDishSerializer
 
 
 class AllergyViewSet(viewsets.ModelViewSet):
     queryset = Allergy.objects.all()
     serializer_class = AllergySerializer
+
+
+class UserAllergyViewSet(viewsets.ModelViewSet):
+    queryset = UserAllergy.objects.all()
+    serializer_class = UserAllergySerializer
