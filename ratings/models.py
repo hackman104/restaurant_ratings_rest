@@ -119,28 +119,17 @@ class Saved_Dish(models.Model):
 
 
 class Allergy(models.Model):
+    """A base list of allergens"""
+    name = models.CharField(max_length=50)
+    description = models.CharField(max_length=100, default=None, blank=True, null=True)
+
+    class Meta:
+        ordering = ('name')
+
+
+class UserAllergy(models.Model):
     """A model to track users' individual allergies"""    
-    MILK = 'milk'
-    SOY = 'soy'
-    PEANUT = 'peanut'
-    WHEAT = 'wheat'
-    TREE_NUTS = 'tree nuts'
-    EGG = 'egg'
-    SHELLFISH = 'shellfish'
-    FISH = 'fish'
-    SESAME = 'sesame'
-    ALLERGEN_CHOICES = (
-        (MILK, 'Milk'),
-        (SOY, 'Soy'),
-        (PEANUT, 'Peanuts'),
-        (WHEAT, 'Wheat/Gluten'),
-        (TREE_NUTS, 'Tree Nuts'),
-        (EGG, 'Eggs'),
-        (SHELLFISH, 'Shellfish'),
-        (FISH, 'Fish'),
-        (SESAME, 'Sesame'),
-    )
-    allergy = models.CharField(max_length=10, choices=ALLERGEN_CHOICES, default=MILK)
+    allergy = models.ForeignKey(Allergy, on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     severity = models.IntegerField(default=0)
     notes = models.CharField(max_length=300, default=None, blank=True, null=True)
