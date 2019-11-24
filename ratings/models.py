@@ -52,7 +52,6 @@ class Review(models.Model):
     restaurant = models.ForeignKey('Restaurant', on_delete=models.CASCADE)
     # overall ease of eating there with given allergy
     score = models.IntegerField(default=0)
-    food_rating = models.IntegerField(default=0)  # overall food rating
     description = models.TextField(default=None, blank=True, null=True)
     review_date = models.DateTimeField("review date", default=timezone.now)
     up_vote = models.IntegerField(default=0)
