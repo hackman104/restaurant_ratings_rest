@@ -29,7 +29,7 @@ class Restaurant(models.Model):
         max_length=30, default=None, blank=True, null=True)
     city = models.CharField(max_length=50, default=None, blank=True, null=True)
     state = models.CharField(max_length=2, default=None, blank=True, null=True)
-    country = models.ForeignKey(Country, on_delete=models.CASCADE)
+    country = models.ForeignKey('Country', on_delete=models.CASCADE)
     phone_number = models.CharField(
         max_length=15, default=None, blank=True, null=True)
     website = models.CharField(
@@ -49,7 +49,7 @@ class Review(models.Model):
     """A model that tracks restaurant reviews"""
     reviewer = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
+    restaurant = models.ForeignKey('Restaurant', on_delete=models.CASCADE)
     # overall ease of eating there with given allergy
     score = models.IntegerField(default=0)
     food_rating = models.IntegerField(default=0)  # overall food rating
@@ -64,13 +64,13 @@ class Review(models.Model):
 
 class ReviewAllergy(models.Model):
     """Table to track allergies at the time of review"""
-    review = models.ForeignKey(Review, on_delete=models.CASCADE)
-    allergy = models.ForeignKey(Allergy, on_delete=models.CASCADE)
+    review = models.ForeignKey('Review', on_delete=models.CASCADE)
+    allergy = models.ForeignKey('Allergy', on_delete=models.CASCADE)
 
 
 class Dish(models.Model):
     name = models.CharField(max_length=50)
-    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
+    restaurant = models.ForeignKey('Restaurant', on_delete=models.CASCADE)
     description = models.CharField(
         max_length=300, default=None, blank=True, null=True)
     created_on = models.DateField(auto_now_add=True)
@@ -81,8 +81,8 @@ class Dish(models.Model):
 
 class UserDish(models.Model):
     """A dish/user junction"""
-    dish = models.ForeignKey(Dish, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    dish = models.ForeignKey('Dish', on_delete=models.CASCADE)
+    user = models.ForeignKey('User', on_delete=models.CASCADE)
     notes = models.CharField(max_length=200)
     modifications = models.CharField(
         max_length=300, default=None, blank=True, null=True)
@@ -92,15 +92,15 @@ class UserDish(models.Model):
 
 class ReviewDish(models.Model):
     """A dish linked to a review"""
-    review = models.ForeignKey(Review, on_delete=models.CASCADE)
-    dish = models.ForeignKey(Dish, on_delete=models.CASCADE)
+    review = models.ForeignKey('Review', on_delete=models.CASCADE)
+    dish = models.ForeignKey('Dish', on_delete=models.CASCADE)
 
 
 class Saved_Dish(models.Model):
     """A model to track users' saved dishes"""
     user = models.ForeignKey(settings.AUTH_USER_MODEL, models.CASCADE)
     restaurant = models.ForeignKey(
-        Restaurant, null=True, blank=True, on_delete=models.SET_NULL)
+        'Restaurant', null=True, blank=True, on_delete=models.SET_NULL)
     dish_name = models.CharField(max_length=50)
     modifications = models.CharField(
         max_length=300, default=None, blank=True, null=True)
@@ -124,7 +124,7 @@ class Allergy(models.Model):
 
 class UserAllergy(models.Model):
     """A model to track users' individual allergies"""
-    allergy = models.ForeignKey(Allergy, on_delete=models.CASCADE)
+    allergy = models.ForeignKey('Allergy', on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.CASCADE)
     severity = models.IntegerField(default=0)
