@@ -13,16 +13,13 @@ class User(AbstractUser):
         return "{0} {1}".format(self.first_name, self.last_name)
 
 
+class Country(models.Model):
+    name = models.CharField(max_length=100)
+    code = models.CharField(max_length=10)
+
+
 class Restaurant(models.Model):
     """A model to track restaurant info"""
-    USA = 'USA'
-    CANADA = 'CA'
-    MEXICO = 'MEX'
-    COUNTRY_CHOICES = (
-        (USA, 'USA'),
-        (CANADA, 'Canada'),
-        (MEXICO, 'Mexico'),
-    )
     name = models.CharField(max_length=200)
     date_added = models.DateTimeField("date added", default=timezone.now)
     # last_review = models.DateTimeField("last review")
@@ -32,8 +29,7 @@ class Restaurant(models.Model):
         max_length=30, default=None, blank=True, null=True)
     city = models.CharField(max_length=50, default=None, blank=True, null=True)
     state = models.CharField(max_length=2, default=None, blank=True, null=True)
-    country = models.CharField(
-        max_length=50, choices=COUNTRY_CHOICES, default=USA)
+    country = models.ForeignKey(Country, on_delete=models.CASCADE)
     phone_number = models.CharField(
         max_length=15, default=None, blank=True, null=True)
     website = models.CharField(
