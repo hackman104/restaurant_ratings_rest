@@ -96,22 +96,6 @@ class ReviewDish(models.Model):
     dish = models.ForeignKey('Dish', on_delete=models.CASCADE)
 
 
-class Saved_Dish(models.Model):
-    """A model to track users' saved dishes"""
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, models.CASCADE)
-    restaurant = models.ForeignKey(
-        'Restaurant', null=True, blank=True, on_delete=models.SET_NULL)
-    dish_name = models.CharField(max_length=50)
-    modifications = models.CharField(
-        max_length=300, default=None, blank=True, null=True)
-    notes = models.CharField(
-        max_length=300, default=None, blank=True, null=True)
-    date_added = models.DateTimeField('date added', default=timezone.now)
-
-    class Meta:
-        ordering = ('-date_added', 'dish_name')
-
-
 class Allergy(models.Model):
     """A base list of allergens"""
     name = models.CharField(max_length=50)
