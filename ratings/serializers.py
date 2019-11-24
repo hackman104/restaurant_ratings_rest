@@ -1,40 +1,67 @@
 from rest_framework import serializers
-from ratings.models import Restaurant, Review, Review_Dish, Saved_Dish, Allergy, User
+from ratings.models import Restaurant, Review, Dish, UserDish, ReviewDish, Allergy, User, UserAllergy, Country, ReviewAllergy
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
-        fields = ("username", "first_name", "last_name", "email", "is_staff")
+        fields = ("id", "username", "first_name", "last_name", "email",
+                  "is_staff")
 
 
 class RestaurantSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Restaurant
-        fields = ("id", "name", "date_added", "street_address", "street_address_2",
-                  "city", "state", "country", "phone_number", "website", "google_maps_link")
+        fields = ("id", "name", "date_added", "street_address",
+                  "street_address_2", "city", "state", "postal_code",
+                  "country", "phone_number", "website", "google_maps_link")
 
 
 class ReviewSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Review
-        fields = ("reviewer", "restaurant", "stars", "food_rating", "primary_allergen",
-                  "description", "review_date", "up_vote", "down_vote")
+        fields = ("reviewer", "restaurant", "score", "description",
+                  "review_date", "up_vote", "down_vote")
 
 
-class Review_DishSerializer(serializers.HyperlinkedModelSerializer):
+class DishSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = Review_Dish
-        fields = ("dish_name", "modifications", "description", "item_rating")
+        model = Dish
+        fields = ("name", "restaurant", "description", "created_on")
 
 
-class Saved_DishSerializer(serializers.HyperlinkedModelSerializer):
+class ReviewDishSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = Saved_Dish
-        fields = ("restaurant", "dish_name", "modifications", "notes", "date_added")
+        model = ReviewDish
+        fields = ("review", "dish")
+
+
+class UserDishSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = UserDish
+        fields = ("dish", "user", "notes", "modifications", "score",
+                  "created_on")
 
 
 class AllergySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Allergy
-        fields = ("allergy", "severity", "notes")
+        fields = ("name", "description")
+
+
+class UserAllergySerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = UserAllergy
+        fields = ("user", "allergy", "severity", "notes")
+
+
+class ReviewAllergySerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = ReviewAllergy
+        fields = ("review", "allergy")
+
+
+class CountrySerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Country
+        fields = ("name", "code")

@@ -1,7 +1,11 @@
 from django.shortcuts import render
 from rest_framework import routers, serializers, viewsets
-from ratings.serializers import UserSerializer, RestaurantSerializer, ReviewSerializer, Review_DishSerializer, Saved_DishSerializer, AllergySerializer
-from ratings.models import User, Restaurant, Review, Review_Dish, Saved_Dish, Allergy
+from ratings.serializers import (UserSerializer, RestaurantSerializer,
+    ReviewSerializer, DishSerializer, ReviewDishSerializer,
+    UserDishSerializer, AllergySerializer, UserAllergySerializer,
+    ReviewAllergySerializer, CountrySerializer)
+from ratings.models import (User, Restaurant, Review, Country, ReviewAllergy,
+    Dish, UserDish, ReviewDish, Allergy, UserAllergy)
 
 # Create your views here.
 class UserViewSet(viewsets.ModelViewSet):
