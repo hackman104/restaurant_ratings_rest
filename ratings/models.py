@@ -3,8 +3,6 @@ from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 from django.utils import timezone
 
-# Create your models here.
-
 
 class User(AbstractUser):
     """An enhanced user model"""
