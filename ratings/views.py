@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework import routers, serializers, viewsets
-from restaurant_ratings.serializers import UserSerializer, RestaurantSerializer, ReviewSerializer, Review_DishSerializer, Saved_DishSerializer, AllergySerializer
+from ratings.serializers import UserSerializer, RestaurantSerializer, ReviewSerializer, Review_DishSerializer, Saved_DishSerializer, AllergySerializer
 from ratings.models import User, Restaurant, Review, Review_Dish, Saved_Dish, Allergy
 
 # Create your views here.
