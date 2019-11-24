@@ -57,40 +57,23 @@ class Review(models.Model):
         (FOUR_STAR, '4'),
         (FIVE_STAR, '5'),
     )
-    MILK = 'milk'
-    SOY = 'soy'
-    PEANUT = 'peanut'
-    WHEAT = 'wheat'
-    TREE_NUTS = 'tree nuts'
-    EGG = 'egg'
-    SHELLFISH = 'shellfish'
-    FISH = 'fish'
-    SESAME = 'sesame'
-    NIGHTSHADES = 'nightshades'
-    ALLERGEN_CHOICES = (
-        (MILK, 'Milk'),
-        (SOY, 'Soy'),
-        (PEANUT, 'Peanuts'),
-        (WHEAT, 'Wheat/Gluten'),
-        (TREE_NUTS, 'Tree Nuts'),
-        (EGG, 'Eggs'),
-        (SHELLFISH, 'Shellfish'),
-        (FISH, 'Fish'),
-        (SESAME, 'Sesame'),
-        (NIGHTSHADES, 'Nightshades'),
-    )
     reviewer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
-    stars = models.IntegerField(choices=STAR_CHOICES, default=ZERO_STAR) # overall ease of eating there with given allergy
+    score = models.IntegerField(default=0) # overall ease of eating there with given allergy
     food_rating = models.IntegerField(default=0) # overall food rating
-    primary_allergen = models.CharField(max_length=12, choices=ALLERGEN_CHOICES, default=MILK)
-    description = models.CharField(max_length=500, default=None, blank=True, null=True)
-    review_date = models.DateTimeField("review date")
+    description = models.TextField(default=None, blank=True, null=True)
+    review_date = models.DateTimeField("review date", default=timezone.now)
     up_vote = models.IntegerField(default=0)
     down_vote = models.IntegerField(default=0)
 
     class Meta:
         ordering = ('-review_date',)
+
+
+class ReviewAllergy(models.Model):
+    """Table to track allergies at the time of review"""
+    review = models.ForeignKey(Review, on_delete=models.CASCADE)
+    allergy = models.ForeignKey(Allergy, on_delete=models.CASCADE)
 
 
 class Review_Dish(models.Model):
