@@ -77,7 +77,7 @@ class Dish(models.Model):
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
     description = models.CharField(
         max_length=300, default=None, blank=True, null=True)
-    created_on = models.DateField(`auto_now`_add=True)
+    created_on = models.DateField(auto_now_add=True)
 
     class Meta:
         ordering = ("name",)
